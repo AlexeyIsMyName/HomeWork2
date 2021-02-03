@@ -22,49 +22,31 @@ class ViewController: UIViewController {
     
     // MARK: - Life Cycles Methods
     override func viewWillLayoutSubviews() {
-        colorPresenterView.layer.cornerRadius = self.view.frame.height * 0.05
+        colorPresenterView.layer.cornerRadius = view.frame.height * 0.05
         refreshColorPresenterViewColor()
     }
     
     // MARK: - IB Actions
-    @IBAction func redColorSliderAction() {
+    @IBAction func colorSliderAction(_ sender: UISlider) {
         refreshColorPresenterViewColor()
-        redColorLabel.text = getColorString(from: redColorSlider.value)
-    }
-    
-    @IBAction func greenColorSliderAction() {
-        refreshColorPresenterViewColor()
-        greenColorLabel.text = getColorString(from: greenColorSlider.value)
-    }
-    
-    @IBAction func blueColorSliderAction() {
-        refreshColorPresenterViewColor()
-        blueColorLabel.text = getColorString(from: blueColorSlider.value)
+        
+        switch sender.tag {
+        case 0: redColorLabel.text = getColorString(from: redColorSlider.value)
+        case 1: greenColorLabel.text = getColorString(from: greenColorSlider.value)
+        case 2: blueColorLabel.text = getColorString(from: blueColorSlider.value)
+        default: break
+        }
     }
     
     // MARK: - Private Methods
     private func refreshColorPresenterViewColor() {
-        let redColor = CGFloat(redColorSlider.value)
-        let greenColor = CGFloat(greenColorSlider.value)
-        let blueColor = CGFloat(blueColorSlider.value)
-        
-        let rgbColor = UIColor.init(red: redColor,
-                                 green: greenColor,
-                                 blue: blueColor,
-                                 alpha: 1.0)
-        
-        colorPresenterView.backgroundColor = rgbColor
+        colorPresenterView.backgroundColor = UIColor(red: CGFloat(redColorSlider.value),
+                                                     green: CGFloat(greenColorSlider.value),
+                                                     blue: CGFloat(blueColorSlider.value),
+                                                     alpha: 1.0)
     }
     
     private func getColorString(from value: Float) -> String {
-        let roundedValue = round(value * 100) / 100
-        let stringValue = String(roundedValue)
-        
-        if stringValue.count < 4 {
-            return stringValue + "0"
-        } else {
-            return stringValue
-        }
+        return String(format: "%.2f", value)
     }
 }
-
